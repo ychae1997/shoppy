@@ -1,3 +1,10 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+
+body {
+  @apply flex flex-col items-center;
+}
+#root {
+  @apply w-full;
+}
