@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import Admin from './pages/Admin';
-import Carts from './pages/Carts';
-import NotFound from './pages/NotFound';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./assets/styles/index.css";
+import App from "./App";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Admin from "./pages/Admin";
+import Carts from "./pages/Carts";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <NotFound />,
     children: [
@@ -21,26 +21,28 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'products',
+        path: "products",
         element: <Products />
       },
       {
-        path: 'products/new',
+        path: "products/new",
         element: <Admin />
       },
       {
-        path: 'products/:id',
+        path: "products/:id",
         element: <ProductDetail />
       },
       {
-        path: 'carts',
+        path: "carts",
         element: <Carts />
       }
     ]
   }
-])
+]);
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
 root.render(
   <React.StrictMode>
