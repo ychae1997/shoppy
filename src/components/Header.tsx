@@ -1,8 +1,15 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaShopify, FaPencilAlt } from "react-icons/fa";
+import { login, logout, onUserStateChange } from "../api/firebase";
+import { NullableUser } from "../types/authTypes";
 
 export default function Header() {
+  const [user, setUser] = useState<NullableUser>(null);
+  useEffect(() => {
+    onUserStateChange((user: NullableUser) => setUser(user));
+  }, []);
+
   return (
     <header className="border-b border-gray-300 py-4">
       <div className="container m-auto flex justify-between">
@@ -19,7 +26,8 @@ export default function Header() {
             <span className="hidden">상품추가</span>
             <FaPencilAlt className="text-xl" />
           </Link>
-          <button>Login</button>
+          {!user && <button onClick={login}>Login</button>}
+          {user && <button onClick={logout}>Logout</button>}
         </nav>
       </div>
     </header>
