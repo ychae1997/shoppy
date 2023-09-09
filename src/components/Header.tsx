@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaShopify, FaPencilAlt } from "react-icons/fa";
 import { login, logout, onUserStateChange } from "../api/firebase";
 import { NullableUser } from "../types/authTypes";
+import User from "./User";
 
 export default function Header() {
   const [user, setUser] = useState<NullableUser>(null);
@@ -26,6 +27,7 @@ export default function Header() {
             <span className="hidden">상품추가</span>
             <FaPencilAlt className="text-xl" />
           </Link>
+          {user && <User user={user} />}
           {!user && <button onClick={login}>Login</button>}
           {user && <button onClick={logout}>Logout</button>}
         </nav>
