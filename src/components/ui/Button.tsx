@@ -1,4 +1,4 @@
-import { ButtonType } from "../../types/buttonTypes";
+import { ButtonType } from "../../types/elementTypes";
 
 export default function Button({ text, onClick }: ButtonType) {
   return (
