@@ -1,5 +1,7 @@
-import { UserCallback } from "./../types/authTypes";
+import { NullableUser, UserCallback } from "./../types/authTypes";
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref, child, get } from "firebase/database";
+
 import {
   getAuth,
   signInWithPopup,
@@ -16,11 +18,13 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_PROJECT_ID
 };
 
+// initialize
 const app = initializeApp(firebaseConfig);
-
-// -- Auth with Google
+// Auth with Google
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+// database
+const database = getDatabase(app);
 
 // -- signInWithPopup() 호출
 export function login() {
@@ -32,7 +36,23 @@ export function logout() {
 }
 
 export async function onUserStateChange(callback: UserCallback) {
-  onAuthStateChanged(auth, user => {
-    callback(user);
+  onAuthStateChanged(auth, async user => {
+    const updatedUser = user ? await adminUser(user) : null;
+    callback(updatedUser);
   });
+}
+
+// -- realtime database
+async function adminUser(user: NullableUser) {
+  const dbRef = ref(database);
+  return get(child(dbRef, "admins")) //
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        const admins = snapshot.val();
+        const isAdmin = admins.includes(user.uid);
+        return { ...user, isAdmin };
+      }
+      // return { ...user, isAdmin: false };
+      return user;
+    });
 }

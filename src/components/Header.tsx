@@ -8,7 +8,10 @@ import User from "./User";
 export default function Header() {
   const [user, setUser] = useState<NullableUser>(null);
   useEffect(() => {
-    onUserStateChange((user: NullableUser) => setUser(user));
+    onUserStateChange((user: NullableUser) => {
+      console.log(user);
+      setUser(user);
+    });
   }, []);
 
   return (
@@ -22,11 +25,13 @@ export default function Header() {
         </h1>
         <nav className="flex gap-4 items-center font-semibold">
           <Link to="/products">Proudcts</Link>
-          <Link to="/carts">Carts</Link>
-          <Link to="/products/new">
-            <span className="hidden">상품추가</span>
-            <FaPencilAlt className="text-xl" />
-          </Link>
+          {user && <Link to="/carts">Carts</Link>}
+          {user?.isAdmin && (
+            <Link to="/products/new">
+              <span className="hidden">상품추가</span>
+              <FaPencilAlt className="text-xl" />
+            </Link>
+          )}
           {user && <User user={user} />}
           {!user && <button onClick={login}>Login</button>}
           {user && <button onClick={logout}>Logout</button>}
