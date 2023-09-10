@@ -4,6 +4,7 @@ import { FaShopify, FaPencilAlt } from "react-icons/fa";
 import { login, logout, onUserStateChange } from "../api/firebase";
 import { NullableUser } from "../types/authTypes";
 import User from "./User";
+import Button from "./ui/Button";
 
 export default function Header() {
   const [user, setUser] = useState<NullableUser>(null);
@@ -33,8 +34,8 @@ export default function Header() {
             </Link>
           )}
           {user && <User user={user} />}
-          {!user && <button onClick={login}>Login</button>}
-          {user && <button onClick={logout}>Logout</button>}
+          {!user && <Button text="login" onClick={login} />}
+          {user && <Button text="logout" onClick={logout} />}
         </nav>
       </div>
     </header>
