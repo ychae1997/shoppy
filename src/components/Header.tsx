@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaShopify, FaPencilAlt } from "react-icons/fa";
-import { login, logout, onUserStateChange } from "../api/firebase";
-import { NullableUser } from "../types/authTypes";
 import User from "./User";
 import Button from "./ui/Button";
+import { useAuthContext } from "./context/AuthContext";
+import { AuthType } from "../types/authTypes";
 
 export default function Header() {
-  const [user, setUser] = useState<NullableUser>(null);
-  useEffect(() => {
-    onUserStateChange((user: NullableUser) => {
-      console.log(user);
-      setUser(user);
-    });
-  }, []);
+  const { user, login, logout } = useAuthContext() as AuthType;
 
   return (
     <header className="border-b border-gray-300 py-4">
