@@ -9,6 +9,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import Carts from "./pages/Carts";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "products/new",
-        element: <Admin />
+        element: (
+          <ProtectedRoute requiredAdmin>
+            <Admin />
+          </ProtectedRoute>
+        )
       },
       {
         path: "products/:id",
@@ -34,7 +39,11 @@ const router = createBrowserRouter([
       },
       {
         path: "carts",
-        element: <Carts />
+        element: (
+          <ProtectedRoute>
+            <Carts />
+          </ProtectedRoute>
+        )
       }
     ]
   }
