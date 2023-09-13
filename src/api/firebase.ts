@@ -1,6 +1,7 @@
 import { NullableUser, UserCallback } from "./../types/authTypes";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, child, get, set } from "firebase/database";
+import { v4 as uuid } from "uuid";
 
 import {
   getAuth,
@@ -9,6 +10,7 @@ import {
   signOut,
   onAuthStateChanged
 } from "firebase/auth";
+import { ProductType } from "../types/productTypes";
 
 // -- Initialize Firebase
 const firebaseConfig = {
@@ -55,4 +57,16 @@ async function adminUser(user: NullableUser) {
       // return { ...user, isAdmin: false };
       return user;
     });
+}
+
+// -- add products
+export async function addNewProduct(product: ProductType, image: string) {
+  const id = uuid();
+  set(ref(database, `products/${uuid()}`), {
+    ...product,
+    id,
+    price: +product.price,
+    image,
+    options: product.options.split(",")
+  });
 }
