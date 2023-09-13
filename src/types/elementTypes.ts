@@ -1,9 +1,19 @@
 export type ButtonType = {
   text: string;
-  onClick: () => void;
+  type?: "submit" | "reset" | "button" | undefined;
+  onClick?: () => void;
 };
 
 export type ProtectedRouteType = {
   children: React.ReactNode;
   requiredAdmin?: boolean;
+};
+
+export type InputType = {
+  type: string;
+  name: string;
+  value?: string | number;
+  text?: string;
+  required?: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
