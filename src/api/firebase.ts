@@ -67,6 +67,25 @@ export async function addNewProduct(product: ProductType, image: string) {
     id,
     price: +product.price,
     image,
-    options: product.options.split(",")
+    options: Array.isArray(product.options)
+      ? product.options
+      : product.options.split(",")
   });
+}
+
+// -- get products
+export async function getProducts(): Promise<ProductType[] | undefined> {
+  const dbRef = ref(database);
+  return get(child(dbRef, "products")) //
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        const products = Object.values(snapshot.val() as ProductType[]);
+        return products;
+      }
+      return [];
+    })
+    .catch(error => {
+      console.error("Error fetching products:", error);
+      return undefined; // 에러가 발생하면 undefined 반환
+    });
 }

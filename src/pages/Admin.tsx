@@ -90,7 +90,11 @@ export default function Admin() {
         <Input
           type="text"
           name="options"
-          value={product?.options ?? ""}
+          value={
+            Array.isArray(product.options)
+              ? product.options.join(", ")
+              : product.options ?? ""
+          }
           text="옵션들(콤마(,)로 구분)"
           required
           onChange={handleChange}
@@ -110,5 +114,6 @@ export const initialProduct = {
   price: 0,
   category: "",
   description: "",
+  // options: []
   options: ""
 };
