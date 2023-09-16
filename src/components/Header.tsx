@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaShopify, FaPencilAlt } from "react-icons/fa";
 import User from "./User";
 import Button from "./ui/Button";
-import { useAuthContext } from "./context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { AuthType } from "../types/authTypes";
 
 export default function Header() {

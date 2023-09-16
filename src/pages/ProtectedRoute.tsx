@@ -2,7 +2,7 @@ import Loading from "./Loading";
 import { Navigate } from "react-router-dom";
 import { AuthType } from "../types/authTypes";
 import { ProtectedRouteType } from "../types/elementTypes";
-import { useAuthContext } from "../components/context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function ProtectedRoute({
   children,
