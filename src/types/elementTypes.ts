@@ -18,3 +18,8 @@ export type InputType = {
   required?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
+export type PriceCardType = {
+  text: string;
+  price: number | undefined;
+};
