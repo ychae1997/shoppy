@@ -4,6 +4,7 @@ import User from "./User";
 import Button from "./ui/Button";
 import { useAuthContext } from "../context/AuthContext";
 import { AuthType } from "../types/authTypes";
+import CartStatus from "./CartStatus";
 
 export default function Header() {
   const { user, login, logout } = useAuthContext() as AuthType;
@@ -19,7 +20,11 @@ export default function Header() {
         </h1>
         <nav className="flex gap-4 items-center font-semibold">
           <Link to="/products">Proudcts</Link>
-          {user && <Link to="/carts">Carts</Link>}
+          {user && (
+            <Link to="/carts">
+              <CartStatus />
+            </Link>
+          )}
           {user?.isAdmin && (
             <Link to="/products/new">
               <span className="hidden">상품추가</span>
