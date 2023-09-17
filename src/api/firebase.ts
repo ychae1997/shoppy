@@ -1,6 +1,6 @@
 import { NullableUser, UserCallback } from "./../types/authTypes";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set, remove } from "firebase/database";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -62,7 +62,7 @@ async function adminUser(user: NullableUser) {
 // -- add products
 export async function addNewProduct(product: ProductType, image: string) {
   const id = uuid();
-  return set(ref(database, `products/${uuid()}`), {
+  return set(ref(database, `products/${id}`), {
     ...product,
     id,
     price: +product.price,
@@ -88,4 +88,26 @@ export async function getProducts(): Promise<ProductType[] | undefined> {
       console.error("Error fetching products:", error);
       return undefined; // 에러가 발생하면 undefined 반환
     });
+}
+
+// -- get cart
+export async function getCart(
+  userId: string
+): Promise<ProductType[] | undefined> {
+  return get(ref(database, `carts/${userId}`)) //
+    .then(snapshot => {
+      const items = snapshot.val() || {};
+      return Object.values(items);
+    });
+}
+
+// -- updated cart
+export async function addOrUpdatedCart(userId: string, product: ProductType) {
+  return set(ref(database, `carts/${userId}/${product.id}`), product);
+  // id가 같고 option이 같을 때 -> 저장을 product.id가 아니라 새로운 uuid 생성해야할듯
+}
+
+// -- delete cart
+export async function deletedCart(userId: string, productId: string) {
+  return remove(ref(database, `carts/${userId}/${productId}`));
 }
