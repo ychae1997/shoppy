@@ -10,7 +10,9 @@ export default function Products() {
     isLoading,
     error,
     data: products
-  } = useQuery<ProductType[] | undefined>(["products"], getProducts);
+  } = useQuery<ProductType[] | undefined>(["products"], getProducts, {
+    staleTime: 1000 * 60
+  });
 
   return (
     <>
