@@ -3,22 +3,14 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ProductType } from "../types/productTypes";
 import upload from "../api/upload";
-import { addNewProduct } from "../api/firebase";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useProduct from "../hooks/useProduct";
 
 export default function Admin() {
+  const { addProduct } = useProduct();
   const [product, setProduct] = useState<ProductType>(initialProduct);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
-
-  const client = useQueryClient();
-  const addProduct = useMutation(
-    ({ product, url }: { product: ProductType; url: string }) =>
-      addNewProduct(product, url), // 어떤 함수를 인자로 받아 변경할 건지
-    { onSuccess: () => client.invalidateQueries(["product"]) }
-    // invalidate -> product키를 가진 캐싱값 refetch
-  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
