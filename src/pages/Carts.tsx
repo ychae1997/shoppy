@@ -1,22 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { ProductType } from "../types/productTypes";
-import { getCart } from "../api/firebase";
-import { useAuthContext } from "../context/AuthContext";
-import { AuthType } from "../types/authTypes";
 import Loading from "./Loading";
 import CartItem from "../components/CartItem";
 import Button from "../components/ui/Button";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { FaEquals } from "react-icons/fa";
 import PriceCard from "../components/PriceCard";
+import useCarts from "../hooks/useCarts";
 
 const SHIPPING = 3000;
 export default function Carts() {
-  const { user } = useAuthContext() as AuthType;
-  const { isLoading, data: products } = useQuery<ProductType[] | undefined>(
-    ["carts"],
-    () => getCart(user.uid)
-  );
+  const {
+    cartQuery: { isLoading, data: products }
+  } = useCarts();
 
   const hasProducts = products && products.length > 0;
   const totalPrice =
@@ -37,11 +31,7 @@ export default function Carts() {
           <ul className="border-b border-gray-300 pb-6 gap-4 grid">
             {products &&
               products.map(product => (
-                <CartItem
-                  key={product.id}
-                  product={product}
-                  userId={user.uid}
-                />
+                <CartItem key={product.id} product={product} />
               ))}
           </ul>
           <div className="flex items-center justify-center">

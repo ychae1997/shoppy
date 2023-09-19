@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Button from "../components/ui/Button";
-import { useAuthContext } from "../context/AuthContext";
-import { AuthType } from "../types/authTypes";
-import { addOrUpdatedCart } from "../api/firebase";
+import useCarts from "../hooks/useCarts";
 
 export default function ProductDetail() {
   const {
@@ -19,22 +17,25 @@ export default function ProductDetail() {
   };
 
   // * 장바구니 추가
-  const { user } = useAuthContext() as AuthType;
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+  const { updatedCart } = useCarts();
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const userId = user && user.uid;
     const product = { id, image, title, price, options: selected, quantity: 1 };
+
     setIsUploading(true);
-    addOrUpdatedCart(userId, product) //
-      .then(() => {
+    updatedCart.mutate(product, {
+      onSuccess: () => {
         setSuccess("장바구니에 제품이 추가되었습니다.");
         setTimeout(() => {
           setSuccess(null);
         }, 4000);
-      })
-      .finally(() => setIsUploading(false));
+      },
+      onSettled: () => {
+        setIsUploading(false);
+      }
+    });
   };
 
   return (

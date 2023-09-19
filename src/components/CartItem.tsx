@@ -1,4 +1,4 @@
-import { addOrUpdatedCart, deletedCart } from "../api/firebase";
+import useCarts from "../hooks/useCarts";
 import { ProductType } from "../types/productTypes";
 import {
   AiFillPlusSquare,
@@ -9,25 +9,20 @@ import {
 const ICON_CLASS =
   "transiton-all cursor-pointer hover:text-brand hover:scale-105";
 
-export default function CartItem({
-  product,
-  userId
-}: {
-  product: ProductType;
-  userId: string;
-}) {
+export default function CartItem({ product }: { product: ProductType }) {
   const { id, image, title, options, price } = product;
   const quantity = product && (product.quantity as number);
+  const { updatedCart, deletedCart } = useCarts();
 
   const handlePlus = () => {
-    addOrUpdatedCart(userId, { ...product, quantity: quantity + 1 });
+    updatedCart.mutate({ ...product, quantity: quantity + 1 });
   };
   const handleMinus = () => {
     if (quantity < 2) return;
-    addOrUpdatedCart(userId, { ...product, quantity: quantity - 1 });
+    updatedCart.mutate({ ...product, quantity: quantity - 1 });
   };
   const handleDelete = () => {
-    deletedCart(userId, id as string);
+    deletedCart.mutate(id as string);
   };
 
   return (
