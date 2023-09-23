@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ProtectedRouteType } from "../../types/elementTypes";
-import { NullableUser, AuthType } from "../../types/authTypes";
-import { login, logout, onUserStateChange } from "../../api/firebase";
+import { ProtectedRouteType } from "../types/elementTypes";
+import { NullableUser, AuthType } from "../types/authTypes";
+import { login, logout, onUserStateChange } from "../api/firebase";
 
 export const AuthContext = createContext<AuthType | undefined>(undefined);
 

@@ -2,7 +2,7 @@ export type ButtonType = {
   text: string;
   type?: "submit" | "reset" | "button" | undefined;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 export type ProtectedRouteType = {
@@ -17,4 +17,9 @@ export type InputType = {
   text?: string;
   required?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export type PriceCardType = {
+  text: string;
+  price: number | undefined;
 };

@@ -4,10 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: '#ff8787'
+        brand: "#ff8787"
+      },
+      backgroundImage: {
+        banner: "url('/public/images/banner.jpg')"
       }
-    },
+    }
   },
-  plugins: [],
-}
-
+  plugins: []
+};

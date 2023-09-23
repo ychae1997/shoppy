@@ -3,9 +3,10 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ProductType } from "../types/productTypes";
 import upload from "../api/upload";
-import { addNewProduct } from "../api/firebase";
+import useProduct from "../hooks/useProduct";
 
 export default function Admin() {
+  const { addProduct } = useProduct();
   const [product, setProduct] = useState<ProductType>(initialProduct);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -29,15 +30,18 @@ export default function Admin() {
     file &&
       upload(file) // 이미지 업로드
         .then(url => {
-          // console.log(url);
-          addNewProduct(product, url).then(() => {
-            // db저장함수 호출
-            setSuccess("성공적으로 제품이 추가되었습니다.");
-            setTimeout(() => {
-              setSuccess(null);
-            }, 4000);
-            // 성공 메시지 띄우기 (4초 후 사라짐)
-          });
+          addProduct.mutate(
+            { product, url },
+            {
+              onSuccess: () => {
+                setSuccess("성공적으로 제품이 추가되었습니다.");
+                setTimeout(() => {
+                  setSuccess(null);
+                }, 4000);
+                // 성공 메시지 띄우기 (4초 후 사라짐)
+              }
+            }
+          );
         })
         .finally(() => setIsUploading(false));
     console.log(product);
@@ -90,7 +94,11 @@ export default function Admin() {
         <Input
           type="text"
           name="options"
-          value={product?.options ?? ""}
+          value={
+            Array.isArray(product.options)
+              ? product.options.join(", ")
+              : product.options ?? ""
+          }
           text="옵션들(콤마(,)로 구분)"
           required
           onChange={handleChange}
@@ -110,5 +118,6 @@ export const initialProduct = {
   price: 0,
   category: "",
   description: "",
+  // options: []
   options: ""
 };
